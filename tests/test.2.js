@@ -11,7 +11,9 @@ fixture `Automation Assessment Test 2`
         })
 
 test('Create a new device and verify it', async t =>{
+    /** Click add device button on home page */
     await t.click(homePage.addDeviceButton)
+    /** Add a new device. */
     newDevicePage.addDevice('MAC-MARIBEL','MAC','512')
 
     await t.expect(homePage.deviceList.innerText).contains('MAC-MARIBEL')

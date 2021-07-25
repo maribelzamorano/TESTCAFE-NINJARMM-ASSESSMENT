@@ -9,6 +9,13 @@ class NewDevicePage{
         this.saveButton = Selector('.submitButton')
     }
 
+
+    /**
+     * Add a Device
+     * @param {string} name - The name of the device.
+     * @param {string} type - The type of the device.
+     * @param {string} capacity - The hdd capacity of the device.
+     */
     async addDevice(name, type, capacity){
         await t
             .typeText(this.systemName, name, { paste: true, replace: true})

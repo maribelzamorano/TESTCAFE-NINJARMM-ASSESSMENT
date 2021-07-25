@@ -21,6 +21,7 @@
   "author": "Maribel Zamorano",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.1",
     "prettier": "^2.3.2",
     "testcafe": "^1.15.0"
   }

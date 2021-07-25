@@ -1,3 +1,4 @@
+import axios from "axios"
 import HomePage from "../page_objects/pages/HomePage"
 
 const homePage = new HomePage()
@@ -9,10 +10,16 @@ fixture `Automation Assessment Test 4`
         })
 
 test('Remove last device from the list', async t =>{
-    var devicesCount = await homePage.deviceList.childElementCount;
-    let { deviceNameContent } = await homePage.getDeviceInfo(devicesCount-1)
-    homePage.removeDevice(devicesCount-1)
+    /** API call. */
+    const response = await axios.get(`http://localhost:3000/devices`)
+    const devices = response.data
+    /** Get last device from the list. */
+    const lastDevice = devices[devices.length - 1]
 
-    await t.expect(deviceNameContent.visible).notOk()
-    await t.expect(deviceNameContent.exists).notOk()
+    /** Delete last device. */
+    await axios.delete(`http://localhost:3000/devices/${lastDevice.id}`)
+    homePage.refresh()
+
+    await t.expect(lastDevice.visible).notOk()
+    await t.expect(lastDevice.exists).notOk()
 })
