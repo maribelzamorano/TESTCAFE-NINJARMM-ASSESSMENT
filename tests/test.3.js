@@ -1,26 +1,19 @@
-import axios from "axios"
 import HomePage from "../page_objects/pages/HomePage"
+import Server from "../server/Server"
 
 const homePage = new HomePage()
+const server = new Server()
 
 fixture `Automation Assessment Test 3`
     .page`http://localhost:3001`
-        .beforeEach(async t => {
-            await t.setTestSpeed(1)
-        })
 
 test('Update name of first device in the list', async t =>{
-    /** API call. */
-    const response = await axios.get(`http://localhost:3000/devices`)
-    /** Get first device from the list. */
-    const firstDevice = response.data[0]
+    const devices = await server.getDevices()
+    const firstDevice = await devices[0]    // Get first device from the list.
 
     /** Change the name of the device, update it and reload the page. */
-    firstDevice.system_name = 'Renamed Device'
-    await axios.put(`http://localhost:3000/devices/${firstDevice.id}`, firstDevice)
+    await server.changeDeviceName('Renamed Device', firstDevice)
     homePage.refresh()
-    /** Get the first device from UI. */
-    let { deviceName } = await homePage.getDeviceInfo(0)
     
-    await t.expect(deviceName.innerText).eql('Renamed Device')
+    await t.expect(homePage.deviceName('Renamed Device').visible).ok()
 })

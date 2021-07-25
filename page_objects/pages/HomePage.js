@@ -2,12 +2,14 @@ import { Selector, ClientFunction, t } from "testcafe";
 
 class HomePage{
     constructor(){
-        this.deviceList = Selector('div').withAttribute('class', 'list-devices')
+        this.deviceList = Selector('div.list-devices')
         this.sortByOptions = Selector('#sort_by')
         this.addDeviceButton = Selector('.submitButton')
-        this.deviceName = Selector('.device-name')
         this.deviceType = Selector('.device-type')
         this.deviceCapacity = Selector('.device-capacity')
+        this.deviceName = name => Selector('.device-name').withExactText(name)
+        this.editButtonInDevice = device => this.deviceName(device).parent().sibling().find('a').withExactText('EDIT')
+        this.removeButtonInDevice = device => this.editButtonInDevice(device).sibling('button').withExactText('REMOVE')
     }
 
     
@@ -16,29 +18,20 @@ class HomePage{
      * @param {string} name - The name of the device(system_name).
      * @return {deviceContent, deviceName, deviceType, deviceCapacity} The name, type, capacity and device content with buttons of a device in the same row.
      */
-    async getDeviceByName(name){
-        let deviceName = Selector('.device-name').withText(name)
-        let deviceType  = deviceName.sibling().withAttribute('class', 'device-type')
-        let deviceCapacity  = deviceName.sibling().withAttribute('class', 'device-capacity')
-        let deviceContent  = deviceName.parent(1)
-
-        return { deviceContent, deviceName, deviceType, deviceCapacity }
+    async getDeviceProperties(name){
+        const deviceType  = this.deviceName(name).sibling().withAttribute('class', 'device-type')
+        const deviceCapacity  = this.deviceName(name).sibling().withAttribute('class', 'device-capacity')
+        return { deviceType, deviceCapacity }
     }
     
     
     /**
-     * Get a device from the device list by position in DOM 
-     * @param {int} i position in the device list.
-     * @return {device, deviceName, deviceType, deviceCapacity} The name, type, capacity and device content with buttons of a device in the same row.
+     * Check if device buttons edit and remove are visible
+     * @param {string} deviceName - The name of the device(system_name).
      */
-    async getDeviceInfo(i){
-        let device = this.deviceList.child(i)
-        let deviceInfo = Selector(device.child('div').child('span'))
-        let deviceName  = deviceInfo.withAttribute('class', 'device-name')
-        let deviceType  = deviceInfo.withAttribute('class', 'device-type')
-        let deviceCapacity  = deviceInfo.withAttribute('class', 'device-capacity')
-           
-        return { device, deviceName, deviceType, deviceCapacity }
+    async areButtonsVisible(deviceName){
+        await t.expect(this.editButtonInDevice(deviceName).visible).ok()
+        await t.expect(this.removeButtonInDevice(deviceName).visible).ok()
     }
     
     
