@@ -1,0 +1,28 @@
+{
+  "name": "testcafe-ninjarmm-assessment",
+  "version": "1.0.0",
+  "description": "Automation Assessment NinjaRMM",
+  "main": "index.js",
+  "scripts": {
+    "test:chrome": "testcafe chrome ./tests -s takeOnFails=true",
+    "test:chrome:5": "testcafe -c 5 chrome ./tests -s takeOnFails=true",
+    "test:chrome:headless": "testcafe chrome:headless ./tests -s takeOnFails=true",
+    "test:chrome:headless:5": "testcafe -c 5 chrome:headless ./tests -s takeOnFails=true",
+    "test:chrome:mobile": "testcafe chrome:emulation:device=iphone X ./tests -s takeOnFails=true",
+    "test:safari": "testcafe safari ./tests -s takeOnFails=true",
+    "test:firefox": "testcafe firefox ./tests -s takeOnFails=true",
+    "test:multiple": "testcafe chrome,firefox ./tests -s takeOnFails=true"
+  },
+  "keywords": [
+    "Testcafe",
+    "Testing",
+    "Automation"
+  ],
+  "author": "Maribel Zamorano",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "prettier": "^2.3.2",
+    "testcafe": "^1.15.0"
+  }
+}
