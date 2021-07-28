@@ -1,5 +1,6 @@
 import HomePage from "../page_objects/pages/HomePage"
 import Server from "../server/Server"
+import { nanoid } from "nanoid"
 
 const homePage = new HomePage()
 const server = new Server()
@@ -12,8 +13,9 @@ test('Update name of first device in the list', async t =>{
     const firstDevice = await devices[0]    // Get first device from the list.
 
     /** Change the name of the device, update it and reload the page. */
-    await server.changeDeviceName('Renamed Device', firstDevice)
-    homePage.refresh()
+    const randomDeviceName = 'Renamed Device/' + (nanoid()).toString()
+    await server.changeDeviceName(randomDeviceName, firstDevice)
+    await homePage.refresh()
     
-    await t.expect(homePage.deviceName('Renamed Device').visible).ok()
+    await t.expect(homePage.deviceName(randomDeviceName).visible).ok()
 })

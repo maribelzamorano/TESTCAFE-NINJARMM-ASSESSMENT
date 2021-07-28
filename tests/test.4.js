@@ -11,8 +11,8 @@ test('Remove last device from the list', async t =>{
     const devices = await server.getDevices()
     const lastDevice = devices[devices.length - 1]    // Get last device from the list.
 
-    server.removeDevice(lastDevice.id)
-    homePage.refresh()
+    await server.removeDevice(lastDevice.id)
+    await homePage.refresh()
 
     await t.expect(lastDevice.exists).notOk()
 })

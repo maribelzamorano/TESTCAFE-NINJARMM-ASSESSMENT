@@ -17,6 +17,8 @@ test('Verify list of devices', async t =>{
         const {deviceType, deviceCapacity} = await homePage.getDeviceProperties(device.system_name)
         await t.expect(deviceType.innerText).eql(device.type)
         await t.expect(deviceCapacity.innerText).eql(device.hdd_capacity + " GB")
+        await t.expect(deviceType.visible).ok()
+        await t.expect(deviceCapacity.visible).ok()
         await homePage.areButtonsVisible(device.system_name)
     }
 
